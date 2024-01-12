@@ -93,8 +93,7 @@ export const logout = expressAsyncHandler(async (req, res) => {
 
 // Profile
 export const userProfile = expressAsyncHandler(async (req, res) => {
-//   const user = await UserModel.findById(id).select('-password');
-  const user = req.user;
+  const user = await UserModel.findById(req?.user?._id).select('-password');
   if (!user) {
     res.status(404);
     throw new Error("User not found");

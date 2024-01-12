@@ -29,13 +29,8 @@ const paymentSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    apiRequestCount: {
-      type: Number,
-      default: 0,
-    },
     monthlyRequestCount: {
-      type: Number,
-      required: true,
+      type: Number
     },
   },
   {
@@ -43,6 +38,5 @@ const paymentSchema = new mongoose.Schema(
   }
 );
 
-const PaymentModel =
-  mongoose.models.PaymentModel || mongoose.model("PaymentModel", paymentSchema);
+const PaymentModel = mongoose.models.PaymentModel || mongoose.model("PaymentModel", paymentSchema);
 export default PaymentModel;
