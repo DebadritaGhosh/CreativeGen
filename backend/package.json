@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Extend the MERN Content Generator by integrating the ChatGPT API for intelligent content suggestions and enhancements. This project combines the MERN stack for robust content management with ChatGPT's natural language processing capabilities. Users can now receive insightful content suggestions, elevating the content creation experience. Deployed on platforms like Heroku or AWS, this project provides a comprehensive learning opportunity in both MERN development and AI integration.",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start" : "node server.js",
@@ -12,7 +13,7 @@
     "type": "git",
     "url": "https://github.com/DebadritaGhosh/CreativeGen/backend"
   },
-  "author": "Debadrita Ghosh",
+  "author": "stackexplorer",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
