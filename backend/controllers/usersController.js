@@ -86,7 +86,23 @@ export const login = expressAsyncHandler(async (req, res) => {
 });
 
 // Logout
+export const logout = expressAsyncHandler(async (req, res) => {
+  res.cookie("token", "", { maxAge: 1 });
+  res.status(200).json({ message: "Logged out successfullt" });
+});
 
 // Profile
+export const userProfile = expressAsyncHandler(async (req, res) => {
+//   const user = await UserModel.findById(id).select('-password');
+  const user = req.user;
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+  res.status(200).json({
+    status: "success",
+    user,
+  });
+});
 
 // Check user auth status

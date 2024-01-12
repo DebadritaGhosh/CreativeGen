@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import usersRouter from "./routes/usersRouter.js";
 import connectDB from "./utils/connectDB.js";
 import errorHandler from "./middleware/errorMiddleware.js";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 connectDB();
@@ -12,6 +13,7 @@ const PORT = process.env.PORT || 8000;
 
 // Middlewares
 app.use(express.json());
+app.use(cookieParser());
 
 // Routes
 app.use("/api/v1/users", usersRouter);
