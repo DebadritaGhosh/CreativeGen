@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import expressAsyncHandler from "express-async-handler";
 import UserModel from "../models/User.js";
+import jwt from "jsonwebtoken";
 
 // Registration
 export const register = expressAsyncHandler(async (req, res) => {
@@ -42,8 +43,6 @@ export const register = expressAsyncHandler(async (req, res) => {
   });
 });
 
-
-
 // Login
 export const login = expressAsyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -65,6 +64,17 @@ export const login = expressAsyncHandler(async (req, res) => {
     res.status(401);
     throw new Error("Invalid email or password");
   }
+
+  const token = jwt.sign({ id: user?._id }, process.env.JWT_SECRET, {
+    expiresIn: "3d",
+  });
+
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+    maxAge: 24 * 60 * 60 * 1000,
+  });
 
   res.json({
     status: "success",
