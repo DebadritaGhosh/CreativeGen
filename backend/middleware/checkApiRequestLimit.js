@@ -14,7 +14,7 @@ const checkApiRequestLimit = expressAsyncHandler(async (req, res, next) => {
 
   let requestLimit = 0;
 
-  if (user?.isTrialActive) {
+  if (user?.trialActive) {
     requestLimit = user?.monthlyRequestCount;
   }
 

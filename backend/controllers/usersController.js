@@ -93,7 +93,10 @@ export const logout = expressAsyncHandler(async (req, res) => {
 
 // Profile
 export const userProfile = expressAsyncHandler(async (req, res) => {
-  const user = await UserModel.findById(req?.user?._id).select('-password');
+  const user = await UserModel.findById(req?.user?._id)
+    .select("-password")
+    .populate("payments")
+    .populate("history");
   if (!user) {
     res.status(404);
     throw new Error("User not found");
@@ -105,3 +108,16 @@ export const userProfile = expressAsyncHandler(async (req, res) => {
 });
 
 // Check user auth status
+
+export const checkAuth = expressAsyncHandler(async (req, res) => {
+  const decoded = jwt.verify(req.cookies.token, process.env.JWT_SECRET);
+  if (decoded) {
+    res.json({
+      isAuthenticated: true,
+    });
+  } else {
+    res.json({
+      isAuthenticated: false,
+    });
+  }
+});

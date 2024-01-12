@@ -43,13 +43,13 @@ const userSchema = new mongoose.Schema(
     payments: [
       {
         type: ObjectId,
-        ref: "Payment",
+        ref: "PaymentModel",
       },
     ],
     history: [
       {
         type: ObjectId,
-        ref: "History",
+        ref: "ContentHistoryModel",
       },
     ],
   },
@@ -60,9 +60,9 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-userSchema.virtual("isTrialActive").get(function(){
-  return this.trialActive && new Date() < this.trialExpires
-})
+// userSchema.virtual("isTrialActive").get(function(){
+//   return this.trialActive && new Date() < this.trialExpires
+// })
 
 const UserModel = mongoose.models.UserModel || mongoose.model("UserModel",userSchema);
 export default UserModel;
