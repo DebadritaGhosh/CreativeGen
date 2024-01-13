@@ -3,6 +3,8 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
 import StatusMessage from "../Alert/StatusMessage";
+import { useMutation } from "@tanstack/react-query";
+import { loginAPI } from "../../apis/users/usersApi";
 
 // Validation schema using Yup
 const validationSchema = Yup.object({
@@ -15,6 +17,9 @@ const validationSchema = Yup.object({
 const Login = () => {
   const navigate = useNavigate();
 
+  // Mutation
+  const mutation = useMutation({ mutationFn: loginAPI });
+
   // Formik setup for form handling
   const formik = useFormik({
     initialValues: {
@@ -26,7 +31,8 @@ const Login = () => {
       // Here, you would typically handle form submission
       console.log(values);
       // Simulate login success and navigate to dashboard
-      navigate("/dashboard");
+      // navigate("/dashboard");
+      mutation.mutate(values);
     },
   });
 
@@ -36,7 +42,18 @@ const Login = () => {
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-8">
           Login to Your Account
         </h2>
-
+        {mutation.isPending && (
+          <StatusMessage type="loading" message="Loading..." />
+        )}
+        {mutation.isError && (
+          <StatusMessage
+            type="error"
+            message={mutation?.error?.response?.data?.message}
+          />
+        )}
+        {mutation.isSuccess && (
+          <StatusMessage type="success" message="Registration success!" />
+        )}
         {/* Form for login */}
         <form onSubmit={formik.handleSubmit} className="space-y-6">
           {/* Email input field */}
