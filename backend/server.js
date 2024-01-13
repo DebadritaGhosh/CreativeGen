@@ -8,6 +8,7 @@ import errorHandler from "./middleware/errorMiddleware.js";
 import cookieParser from "cookie-parser";
 import stripeRouter from "./routes/stripeRouter.js";
 import UserModel from "./models/User.js";
+import cors from "cors";
 
 dotenv.config();
 connectDB();
@@ -95,6 +96,11 @@ cron.schedule("0 0 1 * * *", async () => {
 // Middlewares
 app.use(express.json());
 app.use(cookieParser());
+const corsOptions = {
+  origin : "http://localhost:3000",
+  credentials: true,
+}
+app.use(cors(corsOptions));
 
 // Routes
 app.use("/api/v1/users", usersRouter);
