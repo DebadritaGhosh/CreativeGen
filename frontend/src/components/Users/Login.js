@@ -15,11 +15,18 @@ const validationSchema = Yup.object({
   password: Yup.string().required("Password is required"),
 });
 
+
 const Login = () => {
   const navigate = useNavigate();
   const { isAuthenticated,login } = useAuth();
   // Mutation
   const mutation = useMutation({ mutationFn: loginAPI });
+  
+  useEffect(() => {
+    if(isAuthenticated){
+      navigate('/dashboard');
+    }
+  });
 
   // Formik setup for form handling
   const formik = useFormik({

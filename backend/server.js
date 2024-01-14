@@ -16,82 +16,82 @@ connectDB();
 const app = express();
 const PORT = process.env.PORT || 8000;
 
-cron.schedule("0 0 * * * *", async () => {
-  try {
-    const today = new Date();
+// cron.schedule("0 0 * * * *", async () => {
+//   try {
+//     const today = new Date();
 
-    const updatedUser = await UserModel.updateMany(
-      {
-        trialActive: true,
-        trialExpires: { $lt: today },
-      },
-      {
-        trialExpires: true,
-        subscriptionPlan: "Free",
-        monthlyRequestCount: 5,
-      }
-    );
-  } catch (error) {
-    console.log("cron error => ", error);
-  }
-});
+//     const updatedUser = await UserModel.updateMany(
+//       {
+//         trialActive: true,
+//         trialExpires: { $lt: today },
+//       },
+//       {
+//         trialExpires: true,
+//         subscriptionPlan: "Free",
+//         monthlyRequestCount: 5,
+//       }
+//     );
+//   } catch (error) {
+//     console.log("cron error => ", error);
+//   }
+// });
 
-// free plan
-cron.schedule("0 0 1 * * *", async () => {
-  try {
-    const today = new Date();
+// // free plan
+// cron.schedule("0 0 1 * * *", async () => {
+//   try {
+//     const today = new Date();
 
-    const updatedUser = await UserModel.updateMany(
-      {
-        subscriptionPlan: "Free",
-        nextBillingDate: { $lt: today },
-      },
-      {
-        monthlyRequestCount: 0,
-      }
-    );
-  } catch (error) {
-    console.log("cron error => ", error);
-  }
-});
+//     const updatedUser = await UserModel.updateMany(
+//       {
+//         subscriptionPlan: "Free",
+//         nextBillingDate: { $lt: today },
+//       },
+//       {
+//         monthlyRequestCount: 0,
+//       }
+//     );
+//   } catch (error) {
+//     console.log("cron error => ", error);
+//   }
+// });
 
-// Basic plan
-cron.schedule("0 0 1 * * *", async () => {
-  try {
-    const today = new Date();
+// // Basic plan
+// cron.schedule("0 0 1 * * *", async () => {
+//   try {
+//     const today = new Date();
 
-    const updatedUser = await UserModel.updateMany(
-      {
-        subscriptionPlan: "Basic",
-        nextBillingDate: { $lt: today },
-      },
-      {
-        monthlyRequestCount: 0,
-      }
-    );
-  } catch (error) {
-    console.log("cron error => ", error);
-  }
-});
+//     const updatedUser = await UserModel.updateMany(
+//       {
+//         subscriptionPlan: "Basic",
+//         nextBillingDate: { $lt: today },
+//       },
+//       {
+//         monthlyRequestCount: 0,
+//       }
+//     );
+//   } catch (error) {
+//     console.log("cron error => ", error);
+//   }
+// });
 
-// Premium plan
-cron.schedule("0 0 1 * * *", async () => {
-  try {
-    const today = new Date();
+// // Premium plan
+// cron.schedule("0 0 1 * * *", async () => {
+//   try {
+//     const today = new Date();
 
-    const updatedUser = await UserModel.updateMany(
-      {
-        subscriptionPlan: "Premium",
-        nextBillingDate: { $lt: today },
-      },
-      {
-        monthlyRequestCount: 0,
-      }
-    );
-  } catch (error) {
-    console.log("cron error => ", error);
-  }
-});
+//     const updatedUser = await UserModel.updateMany(
+//       {
+//         subscriptionPlan: "Premium",
+//         nextBillingDate: { $lt: today },
+//       },
+//       {
+//         monthlyRequestCount: 0,
+//       }
+//     );
+//   } catch (error) {
+//     console.log("cron error => ", error);
+//   }
+// });
 
 // Middlewares
 app.use(express.json());

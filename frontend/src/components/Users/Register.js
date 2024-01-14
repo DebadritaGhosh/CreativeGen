@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
 import StatusMessage from "../Alert/StatusMessage";
 import { useMutation } from "@tanstack/react-query";
 import { registerAPI } from "../../apis/users/usersApi";
+import { useAuth } from "../../AuthContext/AuthContext";
 
 // Validation schema
 const validationSchema = Yup.object({
@@ -17,9 +18,17 @@ const validationSchema = Yup.object({
 
 const Registration = () => {
   const navigate = useNavigate();
+  const { isAuthenticated, isLoading, isError } = useAuth();
+
 
   // Mutation
   const mutation = useMutation({ mutationFn: registerAPI });
+
+  useEffect(() => {
+    if(isAuthenticated){
+      navigate('/dashboard');
+    }
+  });
 
   // Formik setup for form handling
   const formik = useFormik({
