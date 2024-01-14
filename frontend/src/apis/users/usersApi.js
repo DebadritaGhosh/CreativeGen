@@ -53,3 +53,14 @@ export const checkUserAuthStatusAPI = async () => {
   );
   return response.data;
 };
+
+// fetch profile
+export const getUserProfileAPI = async () => {
+  const response = await axios.get(
+    `${BASE_URL}/users/profile`,
+    {
+      withCredentials: true,
+    }
+  );
+  return response.data;
+};
