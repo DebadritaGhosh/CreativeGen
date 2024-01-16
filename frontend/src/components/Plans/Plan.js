@@ -59,6 +59,8 @@ export default function Plans() {
     setSelectedPlan(plan);
     if (plan?.id === "Free") {
       navigate("/free-plan");
+    }else{
+      navigate(`/checkout/${plan?.id}?amount=${plan?.amount}`);
     }
   };
   return (
