@@ -10,7 +10,7 @@ const Dashboard = () => {
     queryKey: ["profile"],
   });
 
-  console.log({ isLoading, isError, data, error });
+  // console.log({ isLoading, isError, data, error });
 
   if (isLoading) {
     return <StatusMessage type="loading" message={"Loading please wait"} />;

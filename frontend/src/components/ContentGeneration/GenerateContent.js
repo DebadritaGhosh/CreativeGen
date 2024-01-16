@@ -2,9 +2,21 @@ import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Link } from "react-router-dom";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { getUserProfileAPI } from "../../apis/users/usersApi";
+import StatusMessage from "../Alert/StatusMessage";
+import { generateContentAPI } from "../../apis/chatGpt/chatGpt";
 
 const BlogPostAIAssistant = () => {
   const [generatedContent, setGeneratedContent] = useState("");
+
+  // Mutation
+  const mutation = useMutation({ mutationFn: generateContentAPI });
+
+  const { isLoading, isError, data, error } = useQuery({
+    queryFn: getUserProfileAPI,
+    queryKey: ["profile"],
+  });
 
   // Formik setup for handling form data
   const formik = useFormik({
@@ -20,10 +32,22 @@ const BlogPostAIAssistant = () => {
     }),
     onSubmit: (values) => {
       // Simulate content generation based on form values
-      console.log(values);
-      setGeneratedContent(`Generated content for prompt: ${values.prompt}`);
+      // console.log(values);
+      mutation.mutate(values);
+      // setGeneratedContent(mutation?.data);
     },
   });
+  console.log(mutation);
+
+  if (isLoading) {
+    return <StatusMessage type="loading" message={"Loading please wait"} />;
+  }
+
+  if (isError) {
+    return (
+      <StatusMessage type="error" message={error?.response?.data?.message} />
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-900 flex justify-center items-center p-6">
@@ -31,10 +55,30 @@ const BlogPostAIAssistant = () => {
         <h2 className="text-3xl font-extrabold text-gray-800 mb-6 text-center">
           AI Blog Post Generator
         </h2>
-
-        {/* Static display for Plan and Credits */}
-        {/* ... */}
-
+        {mutation?.isPending && (
+          <StatusMessage type="loading" message={"Loading please wait"} />
+        )}
+        {mutation?.isSuccess && (
+          <StatusMessage
+            type="success"
+            message={"Content generation successfull"}
+          />
+        )}
+        {mutation?.isError && (
+          <StatusMessage
+            type="error"
+            message={mutation?.error?.response?.data.message}
+          />
+        )}
+        <div className="flex">
+          <div className="mt-5 mb-5">
+            <span className="text-sm font-semibold bg-green-200 px-4 py2">
+              Credit :{" "}
+              {data?.user?.monthlyRequestCount - data?.user?.apiRequestCount} /{" "}
+              {data?.user?.monthlyRequestCount}
+            </span>
+          </div>
+        </div>
         {/* Form for generating content */}
         <form onSubmit={formik.handleSubmit} className="space-y-4">
           {/* Prompt input field */}
@@ -115,12 +159,12 @@ const BlogPostAIAssistant = () => {
         </form>
 
         {/* Display generated content */}
-        {generatedContent && (
+        {mutation.isSuccess && (
           <div className="mt-6 p-4 bg-gray-100 rounded-md">
             <h3 className="text-lg font-semibold text-gray-800 mb-2">
               Generated Content:
             </h3>
-            <p className="text-gray-600">{generatedContent}</p>
+            <p className="text-gray-600">{mutation?.data?.data}</p>
           </div>
         )}
       </div>
