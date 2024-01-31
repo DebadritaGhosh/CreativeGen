@@ -27,3 +27,15 @@ export const createStripePaymentIntent = async (payment ) => {
   );
   return response.data;
 };
+
+// Stripe payment
+export const stripePaymentSuccessAPI = async (id ) => {
+  const response = await axios.post(
+    `${BASE_URL}/stripe/varify-payment/${id}`,
+    {},
+    {
+      withCredentials: true,
+    }
+  );
+  return response.data;
+};

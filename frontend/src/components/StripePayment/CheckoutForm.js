@@ -38,16 +38,17 @@ const CheckoutForm = () => {
       };
 
       mutation.mutateAsync(data);
-
-      const { error } = await stripe.confirmPayment({
-        elements,
-        clientSecret: mutation?.data?.clientSecret,
-        confirmParams: {
-          return_url: "http://localhost:3000/success",
-        },
-      });
-      if (error) {
-        setErrorMessage(error?.message);
+      if (mutation?.isSuccess) {
+        const { error } = await stripe.confirmPayment({
+          elements,
+          clientSecret: mutation?.data?.clientSecret,
+          confirmParams: {
+            return_url: "http://localhost:3000/success",
+          },
+        });
+        if (error) {
+          setErrorMessage(error?.message);
+        }
       }
     } catch (error) {
       setErrorMessage(error?.message);
